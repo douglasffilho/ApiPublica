@@ -1,2 +1,2 @@
-# ApiPublica
-API que cobre os verbos HTTP para testes rápidos
+# hmtf-user-services
+Serviço de atualização e autorização de usuários
