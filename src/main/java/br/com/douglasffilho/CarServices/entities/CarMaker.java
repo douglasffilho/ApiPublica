@@ -29,4 +29,6 @@ public class CarMaker {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "image", length = 15000000)
+    private String image;
 }

@@ -5,6 +5,7 @@ import br.com.douglasffilho.CarServices.entities.CarMaker;
 import br.com.douglasffilho.CarServices.rest.api.publicEndpoints.PublicCarMakerRestApiV1Endpoints;
 import br.com.douglasffilho.CarServices.services.CarMakerService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

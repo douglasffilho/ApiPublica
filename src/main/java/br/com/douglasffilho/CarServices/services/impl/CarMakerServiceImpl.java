@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,9 +70,37 @@ public class CarMakerServiceImpl implements CarMakerService {
         }
     }
 
+    private String readImageFile(String fileName) {
+        StringBuilder imageContent = new StringBuilder();
+
+        BufferedReader br = null;
+
+        try {
+            br = new BufferedReader(new FileReader("default_images/" + fileName));
+            String line = br.readLine();
+
+            while(line != null) {
+                imageContent.append(line);
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            log.error("M=CarMakerServiceImpl.readImageFile, E=Erro ao tentar carregar imagem: {}", e.getMessage(), e);
+        } finally {
+            try {
+                if(br != null)
+                    br.close();
+            } catch (IOException e) {
+                log.error("M=CarMakerServiceImpl.readImageFile, E=Erro ao tentar fechar arquivo de imagem: {}", e.getMessage(), e);
+            }
+        }
+
+        return imageContent.toString();
+    }
+
     @Override
-    public void createDeafults() throws ServiceException {
+    public void createDefaults() throws ServiceException {
         List<CarMaker> carMakers = new ArrayList<>();
+
 
         carMakers.add(CarMaker.builder().name("Ferrari").build());
         carMakers.add(CarMaker.builder().name("Yamaha").build());
@@ -79,7 +111,7 @@ public class CarMakerServiceImpl implements CarMakerService {
         try {
             carMakerDao.saveAll(carMakers);
         } catch(Exception e) {
-            log.error("M=CarMakerServiceImpl.createDeafults, E=Erro ao tentar criar padroes: {}", e.getMessage(), e);
+            log.error("M=CarMakerServiceImpl.createDefaults, E=Erro ao tentar criar padroes: {}", e.getMessage(), e);
             throw new ServiceException("Erro ao tentar criar padroes.", e);
         }
 

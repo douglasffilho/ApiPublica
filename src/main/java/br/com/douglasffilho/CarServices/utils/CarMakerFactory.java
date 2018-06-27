@@ -10,6 +10,7 @@ public class CarMakerFactory {
                 .builder()
                 .id(id)
                 .name(carMakerDto.getName())
+                .image(carMakerDto.getImage())
                 .build();
     }
 

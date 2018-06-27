@@ -22,7 +22,7 @@ public class CarServicesApplication {
     @PostConstruct
     private void init() {
         try {
-            carMakerService.createDeafults();
+            carMakerService.createDefaults();
         } catch(ServiceException sex) {
             log.error("M=CarServicesApplication.init, E=Erro ao tentar criar padrao: {}", sex.getMessage(), sex);
         }
