@@ -12,9 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class CarMakerServiceImpl implements CarMakerService {
         try {
             log.info("M=CarMakerServiceImpl.register, I=Registrando fabricante: {}", carMaker);
             return carMakerDao.saveAndFlush(CarMakerFactory.create(0L, carMaker));
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.register, E=Erro ao tentar registrar fabricante: {}", e.getMessage(), e);
             throw new ServiceException("Erro ao tentar registrar fabricante.", e);
         }
@@ -42,7 +41,7 @@ public class CarMakerServiceImpl implements CarMakerService {
         try {
             log.info("M=CarMakerServiceImpl.updateInfo, I=Atualizando informações de fabricante: {}", carMaker);
             return carMakerDao.saveAndFlush(CarMakerFactory.create(id, carMaker));
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.updateInfo, E=Erro ao tentar atualizar informações de fabricante: {}", e.getMessage(), e);
             throw new ServiceException("Erro ao tentar atualizar informações de fabricante.", e);
         }
@@ -53,7 +52,7 @@ public class CarMakerServiceImpl implements CarMakerService {
         try {
             log.info("M=CarMakerServiceImpl.list, I=Listando fabricantes.");
             return carMakerDao.findAll();
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.list, E=Erro ao tentar listar fabricantes: {}", e.getMessage(), e);
             throw new ServiceException("Erro ao tentar listar fabricantes.", e);
         }
@@ -64,7 +63,7 @@ public class CarMakerServiceImpl implements CarMakerService {
         try {
             log.info("M=CarMakerServiceImpl.findByName, I=Obtendo fabricante por nome: {}", name);
             return carMakerDao.findByName(name);
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.findByName, E=Erro ao tentar obter fabricante por nome: {}", e.getMessage(), e);
             throw new ServiceException("Erro ao tentar obter fabricante por nome.", e);
         }
@@ -76,10 +75,10 @@ public class CarMakerServiceImpl implements CarMakerService {
         BufferedReader br = null;
 
         try {
-            br = new BufferedReader(new FileReader("default_images/" + fileName));
+            br = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("default_images/" + fileName)));
             String line = br.readLine();
 
-            while(line != null) {
+            while (line != null) {
                 imageContent.append(line);
                 line = br.readLine();
             }
@@ -87,7 +86,7 @@ public class CarMakerServiceImpl implements CarMakerService {
             log.error("M=CarMakerServiceImpl.readImageFile, E=Erro ao tentar carregar imagem: {}", e.getMessage(), e);
         } finally {
             try {
-                if(br != null)
+                if (br != null)
                     br.close();
             } catch (IOException e) {
                 log.error("M=CarMakerServiceImpl.readImageFile, E=Erro ao tentar fechar arquivo de imagem: {}", e.getMessage(), e);
@@ -102,15 +101,15 @@ public class CarMakerServiceImpl implements CarMakerService {
         List<CarMaker> carMakers = new ArrayList<>();
 
 
-        carMakers.add(CarMaker.builder().name("Ferrari").build());
-        carMakers.add(CarMaker.builder().name("Yamaha").build());
-        carMakers.add(CarMaker.builder().name("Volkswagen").build());
-        carMakers.add(CarMaker.builder().name("Ford").build());
-        carMakers.add(CarMaker.builder().name("Fiat").build());
+        carMakers.add(CarMaker.builder().name("Ferrari").image(readImageFile("Ferrari")).build());
+        carMakers.add(CarMaker.builder().name("Yamaha").image(readImageFile("Yamaha")).build());
+        carMakers.add(CarMaker.builder().name("Volkswagen").image(readImageFile("Volkswagen")).build());
+        carMakers.add(CarMaker.builder().name("Ford").image(readImageFile("Ford")).build());
+        carMakers.add(CarMaker.builder().name("Fiat").image(readImageFile("Fiat")).build());
 
         try {
             carMakerDao.saveAll(carMakers);
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.createDefaults, E=Erro ao tentar criar padroes: {}", e.getMessage(), e);
             throw new ServiceException("Erro ao tentar criar padroes.", e);
         }
