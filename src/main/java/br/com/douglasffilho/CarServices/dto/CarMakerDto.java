@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = false)
 public class CarMakerDto {
 
-    @ApiModelProperty(value = "Nome do  Fabricante")
+    @ApiModelProperty(value = "Nome do Fabricante")
     @NotNull(message = "O nome do fabricante não pode ser branco ou nulo")
     private String name;
 

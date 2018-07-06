@@ -16,6 +16,8 @@ public interface CarMakerService {
 
     CarMaker findByName(String name) throws ServiceException;
 
+    void delete(Long id) throws ServiceException;
+
     void createDefaults() throws ServiceException;
 
 }

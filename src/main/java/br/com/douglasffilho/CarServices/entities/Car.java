@@ -28,7 +28,7 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @OneToOne
@@ -37,6 +37,9 @@ public class Car {
 
     @Column(name = "build_year")
     private Integer buildYear;
+
+    @Column(name = "image", length = 15000000)
+    private String image;
 
     @Column(name = "description")
     private String description;
