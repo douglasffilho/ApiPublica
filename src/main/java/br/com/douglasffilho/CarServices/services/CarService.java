@@ -1,17 +1,17 @@
 package br.com.douglasffilho.CarServices.services;
 
-import br.com.douglasffilho.CarServices.dto.CarDto;
 import br.com.douglasffilho.CarServices.entities.Car;
 import br.com.douglasffilho.CarServices.entities.CarMaker;
+import br.com.douglasffilho.CarServices.vos.CarVo;
 import org.hibernate.service.spi.ServiceException;
 
 import java.util.List;
 
 public interface CarService {
 
-    Car register(CarDto car) throws ServiceException;
+    Car register(CarVo car) throws ServiceException;
 
-    Car updateInfo(Long id, CarDto car) throws ServiceException;
+    Car updateInfo(Long id, CarVo car) throws ServiceException;
 
     void delete(Long id) throws ServiceException;
 

@@ -1,27 +1,25 @@
 package br.com.douglasffilho.CarServices.services.impl;
 
-import br.com.douglasffilho.CarServices.dao.CarMakerDao;
-import br.com.douglasffilho.CarServices.dto.CarMakerDto;
 import br.com.douglasffilho.CarServices.entities.CarMaker;
+import br.com.douglasffilho.CarServices.repositories.CarMakerRepository;
 import br.com.douglasffilho.CarServices.services.CarMakerService;
-import br.com.douglasffilho.CarServices.utils.CarMakerFactory;
-import br.com.douglasffilho.CarServices.utils.TemplateImageLoader;
+import br.com.douglasffilho.CarServices.utils.factories.CarMakerFactory;
+import br.com.douglasffilho.CarServices.utils.loaders.TemplateImageLoader;
+import br.com.douglasffilho.CarServices.vos.CarMakerVo;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
-@Transactional
 public class CarMakerServiceImpl implements CarMakerService {
 
     @Autowired
-    private CarMakerDao carMakerDao;
+    private CarMakerRepository carMakerRepository;
 
     @Autowired
     private CarMakerFactory carMakerFactory;
@@ -30,10 +28,10 @@ public class CarMakerServiceImpl implements CarMakerService {
     private TemplateImageLoader templateImageLoader;
 
     @Override
-    public CarMaker register(CarMakerDto carMaker) throws ServiceException {
+    public CarMaker register(CarMakerVo carMaker) throws ServiceException {
         try {
             log.info("M=CarMakerServiceImpl.register, I=Registrando fabricante: {}", carMaker);
-            return carMakerDao.saveAndFlush(carMakerFactory.create(0L, carMaker));
+            return carMakerRepository.saveAndFlush(carMakerFactory.create(0L, carMaker));
         } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.register, E=Erro ao tentar registrar fabricante: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -41,10 +39,10 @@ public class CarMakerServiceImpl implements CarMakerService {
     }
 
     @Override
-    public CarMaker updateInfo(Long id, CarMakerDto carMaker) throws ServiceException {
+    public CarMaker updateInfo(Long id, CarMakerVo carMaker) throws ServiceException {
         try {
             log.info("M=CarMakerServiceImpl.updateInfo, I=Atualizando informações de fabricante: {}", carMaker);
-            return carMakerDao.saveAndFlush(carMakerFactory.create(id, carMaker));
+            return carMakerRepository.saveAndFlush(carMakerFactory.create(id, carMaker));
         } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.updateInfo, E=Erro ao tentar atualizar informações de fabricante: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -55,7 +53,7 @@ public class CarMakerServiceImpl implements CarMakerService {
     public List<CarMaker> list() throws ServiceException {
         try {
             log.info("M=CarMakerServiceImpl.list, I=Listando fabricantes.");
-            return carMakerDao.findAll();
+            return carMakerRepository.findAll();
         } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.list, E=Erro ao tentar listar fabricantes: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -66,7 +64,7 @@ public class CarMakerServiceImpl implements CarMakerService {
     public CarMaker findByName(String name) throws ServiceException {
         try {
             log.info("M=CarMakerServiceImpl.findByName, I=Obtendo fabricante por nome: {}", name);
-            return carMakerDao.findByName(name);
+            return carMakerRepository.findByName(name);
         } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.findByName, E=Erro ao tentar obter fabricante por nome: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -78,9 +76,9 @@ public class CarMakerServiceImpl implements CarMakerService {
         try {
             log.info("M=CarMakerServiceImpl.delete, I=Procurando fabricante por id: {}", id);
 
-            carMakerDao.findById(id).ifPresent(carMaker -> {
+            carMakerRepository.findById(id).ifPresent(carMaker -> {
                 log.info("M=CarMakerServiceImpl.delete, I=Removendo fabricante por id: {}", carMaker.getId());
-                carMakerDao.delete(carMaker);
+                carMakerRepository.delete(carMaker);
                 log.info("M=CarMakerServiceImpl.delete, I=Fabricante removido com exito");
             });
         } catch (Exception e) {
@@ -101,7 +99,7 @@ public class CarMakerServiceImpl implements CarMakerService {
         carMakers.add(CarMaker.builder().name("Fiat").image(templateImageLoader.getImage("cars_makers", "Fiat")).build());
 
         try {
-            carMakerDao.saveAll(carMakers);
+            carMakerRepository.saveAll(carMakers);
         } catch (Exception e) {
             log.error("M=CarMakerServiceImpl.createDefaults, E=Erro ao tentar criar padroes: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

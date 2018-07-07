@@ -1,29 +1,27 @@
 package br.com.douglasffilho.CarServices.services.impl;
 
-import br.com.douglasffilho.CarServices.dao.CarDao;
-import br.com.douglasffilho.CarServices.dto.CarDto;
 import br.com.douglasffilho.CarServices.entities.Car;
 import br.com.douglasffilho.CarServices.entities.CarMaker;
+import br.com.douglasffilho.CarServices.repositories.CarRepository;
 import br.com.douglasffilho.CarServices.services.CarMakerService;
 import br.com.douglasffilho.CarServices.services.CarService;
-import br.com.douglasffilho.CarServices.utils.CarFactory;
-import br.com.douglasffilho.CarServices.utils.TemplateImageLoader;
+import br.com.douglasffilho.CarServices.utils.factories.CarFactory;
+import br.com.douglasffilho.CarServices.utils.loaders.TemplateImageLoader;
+import br.com.douglasffilho.CarServices.vos.CarVo;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
-@Transactional
 public class CarServiceImpl implements CarService {
 
     @Autowired
-    private CarDao carDao;
+    private CarRepository carRepository;
 
     @Autowired
     private CarMakerService carMakerService;
@@ -35,10 +33,10 @@ public class CarServiceImpl implements CarService {
     private TemplateImageLoader templateImageLoader;
 
     @Override
-    public Car register(CarDto car) throws ServiceException {
+    public Car register(CarVo car) throws ServiceException {
         log.info("M=CarServiceImpl.register, I=Cadastrando carro: {}", car);
         try {
-            return carDao.saveAndFlush(carFactory.createCar(null, car));
+            return carRepository.saveAndFlush(carFactory.createCar(null, car));
         } catch (Exception e) {
             log.error("M=CarServiceImpl.register, E=Erro ao tentar cadastrar carro: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -46,11 +44,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car updateInfo(Long id, CarDto car) throws ServiceException {
+    public Car updateInfo(Long id, CarVo car) throws ServiceException {
         Car carModel = carFactory.createCar(id, car);
         log.info("M=CarServiceImpl.updateInfo, I=Atualizando carro: {}", carModel);
         try {
-            return carDao.saveAndFlush(carModel);
+            return carRepository.saveAndFlush(carModel);
         } catch (Exception e) {
             log.error("M=CarServiceImpl.updateInfo, E=Erro ao tentar atualizar carro: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -62,9 +60,9 @@ public class CarServiceImpl implements CarService {
         try {
             log.info("M=CarServiceImpl.delete, I=Procurando carro por id: {}", id);
 
-            carDao.findById(id).ifPresent(car -> {
+            carRepository.findById(id).ifPresent(car -> {
                 log.info("M=CarServiceImpl.delete, I=Removendo carro por id: {}", car.getId());
-                carDao.delete(car);
+                carRepository.delete(car);
                 log.info("M=CarServiceImpl.delete, I=Carro removido com exito");
             });
         } catch (Exception e) {
@@ -80,22 +78,22 @@ public class CarServiceImpl implements CarService {
                 if (toThisYear != null && toThisYear > 0) {
                     if (fromThisYear.equals(toThisYear)) {
                         log.info("M=CarServiceImpl.list, I=Listando carros fabricados em {}", fromThisYear);
-                        return carDao.findByBuildYear(fromThisYear);
+                        return carRepository.findByBuildYear(fromThisYear);
                     } else {
                         log.info("M=CarServiceImpl.list, I=Listando carros fabricados entre {} e {}", fromThisYear, toThisYear);
-                        return carDao.findByBuildYearBetween(fromThisYear, toThisYear);
+                        return carRepository.findByBuildYearBetween(fromThisYear, toThisYear);
                     }
                 } else {
                     log.info("M=CarServiceImpl.list, I=Listando carros fabricados a partir de {}", fromThisYear);
-                    return carDao.findByBuildYearGreaterThanEqual(fromThisYear);
+                    return carRepository.findByBuildYearGreaterThanEqual(fromThisYear);
                 }
             } else {
                 if (toThisYear != null && toThisYear > 0) {
                     log.info("M=CarServiceImpl.list, I=Listando carros fabricados ate {}", toThisYear);
-                    return carDao.findByBuildYearLessThanEqual(toThisYear);
+                    return carRepository.findByBuildYearLessThanEqual(toThisYear);
                 } else {
                     log.info("M=CarServiceImpl.list, I=Listando carros fabricados");
-                    return carDao.findAll();
+                    return carRepository.findAll();
                 }
             }
         } catch (Exception e) {
@@ -108,7 +106,7 @@ public class CarServiceImpl implements CarService {
     public Car findByName(String name) throws ServiceException {
         try {
             log.info("M=CarServiceImpl.findByName, I=Obtendo carro por nome {}", name);
-            return carDao.findByName(name);
+            return carRepository.findByName(name);
         } catch (Exception e) {
             log.error("M=CarServiceImpl.findByName, E=Erro ao tentar obter carro por nome: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -119,7 +117,7 @@ public class CarServiceImpl implements CarService {
     public List<Car> findByMaker(CarMaker maker) throws ServiceException {
         try {
             log.info("M=CarServiceImpl.findByMaker, I=Obtendo carro por fabricante {}", maker);
-            return carDao.findByMaker(maker);
+            return carRepository.findByMaker(maker);
         } catch (Exception e) {
             log.error("M=CarServiceImpl.findByMaker, E=Erro ao tentar obter carro por fabricante: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -177,7 +175,7 @@ public class CarServiceImpl implements CarService {
                     .description("Gordon Murray's radical new carbonfibre manufacturing system")
                     .build());
 
-            carDao.saveAll(cars);
+            carRepository.saveAll(cars);
         } catch (Exception e) {
             log.error("M=CarServiceImpl.createDefaults, E=Erro ao tentar criar padroes: {}", e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

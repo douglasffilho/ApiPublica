@@ -1,11 +1,11 @@
 package br.com.douglasffilho.CarServices.rest.api.v1;
 
-import br.com.douglasffilho.CarServices.dto.CarDto;
 import br.com.douglasffilho.CarServices.entities.Car;
 import br.com.douglasffilho.CarServices.entities.CarMaker;
 import br.com.douglasffilho.CarServices.rest.api.publicEndpoints.PublicCarMakerRestApiV1Endpoints;
 import br.com.douglasffilho.CarServices.services.CarMakerService;
 import br.com.douglasffilho.CarServices.services.CarService;
+import br.com.douglasffilho.CarServices.vos.CarVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -235,7 +235,7 @@ public class CarRestApi {
             )
     })
     @PostMapping
-    public Car register(@Valid @RequestBody CarDto car, HttpServletResponse response) throws IOException {
+    public Car register(@Valid @RequestBody CarVo car, HttpServletResponse response) throws IOException {
         try {
             log.info("M=CarRestApi.register, I=Registrando carro: {}" + car);
             return carService.register(car);
@@ -260,7 +260,7 @@ public class CarRestApi {
             )
     })
     @PutMapping(value = "/{carId}")
-    public Car update(@PathVariable(value = "carId") Long carId, @Valid @RequestBody CarDto car, HttpServletResponse response) throws IOException {
+    public Car update(@PathVariable(value = "carId") Long carId, @Valid @RequestBody CarVo car, HttpServletResponse response) throws IOException {
         try {
             log.info("M=CarRestApi.update, I=Atualizando carro registrado com id: {}" + carId);
             return carService.updateInfo(carId, car);

@@ -1,4 +1,4 @@
-package br.com.douglasffilho.CarServices.dto;
+package br.com.douglasffilho.CarServices.vos;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class CarMakerDto {
+public class CarMakerVo {
 
     @ApiModelProperty(value = "Nome do Fabricante")
     @NotNull(message = "O nome do fabricante não pode ser branco ou nulo")

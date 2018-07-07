@@ -1,9 +1,9 @@
 package br.com.douglasffilho.CarServices.rest.api.v1;
 
-import br.com.douglasffilho.CarServices.dto.CarMakerDto;
 import br.com.douglasffilho.CarServices.entities.CarMaker;
 import br.com.douglasffilho.CarServices.rest.api.publicEndpoints.PublicCarMakerRestApiV1Endpoints;
 import br.com.douglasffilho.CarServices.services.CarMakerService;
+import br.com.douglasffilho.CarServices.vos.CarMakerVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -103,7 +103,7 @@ public class CarMakerRestApi {
             )
     })
     @PostMapping()
-    public CarMaker register(@Valid @RequestBody CarMakerDto carMaker, HttpServletResponse response) throws IOException {
+    public CarMaker register(@Valid @RequestBody CarMakerVo carMaker, HttpServletResponse response) throws IOException {
         try {
             return carMakerService.register(carMaker);
         } catch (ServiceException sex) {
@@ -127,7 +127,7 @@ public class CarMakerRestApi {
             )
     })
     @PutMapping(value = "/{carMakerId}")
-    public CarMaker update(@PathVariable("carMakerId") Long id, @Valid @RequestBody CarMakerDto carMaker, HttpServletResponse response) throws IOException {
+    public CarMaker update(@PathVariable("carMakerId") Long id, @Valid @RequestBody CarMakerVo carMaker, HttpServletResponse response) throws IOException {
         try {
             return carMakerService.updateInfo(id, carMaker);
         } catch (ServiceException sex) {

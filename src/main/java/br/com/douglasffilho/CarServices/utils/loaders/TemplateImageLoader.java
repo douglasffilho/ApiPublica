@@ -1,4 +1,4 @@
-package br.com.douglasffilho.CarServices.utils;
+package br.com.douglasffilho.CarServices.utils.loaders;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
