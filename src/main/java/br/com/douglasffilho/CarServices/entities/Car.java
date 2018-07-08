@@ -12,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Data
@@ -31,8 +31,8 @@ public class Car {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "maker")
+    @ManyToOne
+    @JoinColumn(name = "maker_id")
     private CarMaker maker;
 
     @Column(name = "build_year")
@@ -43,4 +43,5 @@ public class Car {
 
     @Column(name = "description")
     private String description;
+    
 }
