@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Data
@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 public class CarMakerVo {
 
     @ApiModelProperty(value = "Nome do Fabricante")
-    @NotNull(message = "O nome do fabricante não pode ser branco ou nulo")
+    @NotEmpty(message = "O nome do fabricante não pode ser branco ou nulo")
     private String name;
 
     @ApiModelProperty(value = "Imagem em formato base64")

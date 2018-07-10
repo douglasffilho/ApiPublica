@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,14 +20,15 @@ import javax.validation.constraints.Size;
 public class CarVo {
 
     @ApiModelProperty(value = "Nome do Carro")
-    @NotNull(message = "O nome do carro não pode ser branco ou nulo")
+    @NotEmpty(message = "O nome do carro não pode ser branco ou nulo")
     private String name;
 
     @ApiModelProperty(value = "Fabricante do Carro")
-    @NotNull(message = "O Fabricante do Carro não pode ser nulo ou inválido")
+    @NotEmpty(message = "O Fabricante do Carro não pode ser nulo ou inválido")
     private String maker;
 
     @ApiModelProperty(value = "Ano de Fabricacao do Carro")
+    @Min(value = 1862, message = "Não haviam carros nesse tempo hein.")
     @NotNull(message = "O ano de fabricação do carro não pode ser nulo ou inválido")
     private Integer buildYear;
 

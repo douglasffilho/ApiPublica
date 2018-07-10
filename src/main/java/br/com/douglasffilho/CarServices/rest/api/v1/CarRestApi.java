@@ -169,7 +169,7 @@ public class CarRestApi {
     @GetMapping(value = "/by-car-maker/{carMakerName}")
     public List<Car> listByCarMaker(@PathVariable("carMakerName") String carMakerName, HttpServletResponse response) throws IOException {
         try {
-            log.info("M=CarRestApi.listByCarMaker, I=Obtendo carros registrados pelo fabricante com nome: {}" + carMakerName);
+            log.info("M=CarRestApi.listByCarMaker, I=Obtendo carros registrados pelo fabricante com nome: {}", carMakerName);
 
             CarMaker maker = carMakerService.findByName(carMakerName);
 
@@ -208,7 +208,7 @@ public class CarRestApi {
     @GetMapping(value = "name/{name}")
     public Car findCarByName(@PathVariable(value = "name") String name, HttpServletResponse response) throws IOException {
         try {
-            log.info("M=CarRestApi.findCarByName, I=Obtendo carro registrado com nome: {}" + name);
+            log.info("M=CarRestApi.findCarByName, I=Obtendo carro registrado com nome: {}", name);
             Car found = carService.findByName(name);
             if (found == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Carro não encontrado.");
@@ -237,7 +237,7 @@ public class CarRestApi {
     @PostMapping
     public Car register(@Valid @RequestBody CarVo car, HttpServletResponse response) throws IOException {
         try {
-            log.info("M=CarRestApi.register, I=Registrando carro: {}" + car);
+            log.info("M=CarRestApi.register, I=Registrando carro: {}", car);
             return carService.register(car);
         } catch (ServiceException sex) {
             log.error("M=CarRestApi.register, E=Erro ao tentar cadastrar carro: {}", sex.getMessage(), sex);
@@ -262,7 +262,7 @@ public class CarRestApi {
     @PutMapping(value = "/{carId}")
     public Car update(@PathVariable(value = "carId") Long carId, @Valid @RequestBody CarVo car, HttpServletResponse response) throws IOException {
         try {
-            log.info("M=CarRestApi.update, I=Atualizando carro registrado com id: {}" + carId);
+            log.info("M=CarRestApi.update, I=Atualizando carro registrado com id {}: {}", carId, car);
             return carService.updateInfo(carId, car);
         } catch (ServiceException sex) {
             log.error("M=CarRestApi.update, E=Erro ao tentar atualizar informações do carro: {}", sex.getMessage(), sex);
@@ -287,7 +287,7 @@ public class CarRestApi {
     @DeleteMapping(value = "/{carId}")
     public String delete(@PathVariable(value = "carId") Long carId, HttpServletResponse response) throws IOException {
         try {
-            log.info("M=CarRestApi.delete, I=Removendo carro registrado com id: {}" + carId);
+            log.info("M=CarRestApi.delete, I=Removendo carro registrado com id: {}", carId);
             carService.delete(carId);
             return "Carro removido com exito.";
         } catch (ServiceException sex) {

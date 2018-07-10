@@ -28,20 +28,20 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "maker_id")
+    @JoinColumn(name = "maker_id", nullable = false)
     private CarMaker maker;
 
-    @Column(name = "build_year")
+    @Column(name = "build_year", nullable = false)
     private Integer buildYear;
 
     @Column(name = "image", length = 15000000)
     private String image;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
-    
+
 }

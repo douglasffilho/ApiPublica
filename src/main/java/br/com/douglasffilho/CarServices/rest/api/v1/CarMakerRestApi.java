@@ -105,10 +105,12 @@ public class CarMakerRestApi {
     @PostMapping()
     public CarMaker register(@Valid @RequestBody CarMakerVo carMaker, HttpServletResponse response) throws IOException {
         try {
+            log.info("M=CarMakerRestApi.register, I=Tentando registrar fabricante: {}", carMaker);
             return carMakerService.register(carMaker);
         } catch (ServiceException sex) {
             log.error("M=CarMakerRestApi.register, E=Erro ao tentar registrar novo fabricante de carros: {}", sex.getMessage(), sex);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Erro ao tentar registrar novo fabricante de carros: " + sex.getMessage());
+
             return null;
         }
     }
@@ -129,6 +131,7 @@ public class CarMakerRestApi {
     @PutMapping(value = "/{carMakerId}")
     public CarMaker update(@PathVariable("carMakerId") Long id, @Valid @RequestBody CarMakerVo carMaker, HttpServletResponse response) throws IOException {
         try {
+            log.info("M=CarMakerRestApi.update, I=Tentando atualizar fabricante com id {}: {}", id, carMaker);
             return carMakerService.updateInfo(id, carMaker);
         } catch (ServiceException sex) {
             log.error("M=CarMakerRestApi.register, E=Erro ao tentar atualizar fabricante de carros: {}", sex.getMessage(), sex);
@@ -153,6 +156,7 @@ public class CarMakerRestApi {
     @DeleteMapping(value = "/{carMakerId}")
     public String delete(@PathVariable("carMakerId") Long id, HttpServletResponse response) throws IOException {
         try {
+            log.info("M=CarMakerRestApi.delete, I=Tentando remover fabricante com id {}", id);
             carMakerService.delete(id);
             return "Fabricante removido com exito.";
         } catch (ServiceException sex) {
